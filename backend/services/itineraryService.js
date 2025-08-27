@@ -7,6 +7,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const generationConfig = {
   temperature: 0.9, // Adjustable temperature value (0-1 range)
   topP: 0.9,
+  topK: 40, // Added Top-K parameter (40 = consider top 40 most likely tokens)
   maxOutputTokens: 2048,
 };
 
