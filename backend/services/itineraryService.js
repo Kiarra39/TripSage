@@ -2,12 +2,12 @@
 import dotenv from "dotenv";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-dotenv.config(); // makes sure process.env is available
+dotenv.config(); 
 
-// ✅ Initialize Gemini
+
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-// ✅ Pick your model (gemini-1.5-flash is lightweight & fast)
+
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 /**
@@ -19,25 +19,46 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
  */
 export const generateItinerary = async (destination, days, details = "") => {
   try {
-   const prompt = `
-  You are TripSage, an AI travel assistant. Create a detailed ${days}-day itinerary for ${destination}.
-  The itinerary should include:
-  1. Daily schedule with morning, afternoon, and evening activities
-  2. Key attractions to visit
-  3. Food and dining suggestions
-  4. Estimated costs for each day
-  5. Transportation options
-  6. Additional tips or recommendations
+const buildDynamicPrompt = (destination, days, details = "") => {
+  let prompt = `You are TripSage, an AI travel assistant. Create a detailed ${days}-day itinerary for ${destination}.`;
   
-  User preferences: ${details || "No specific preferences provided"}.
+  // Add sections based on what information we have
+  prompt += `\n\nThe itinerary should include:`;
+  prompt += `\n1. Daily schedule with morning, afternoon, and evening activities`;
+  prompt += `\n2. Key attractions to visit`;
+  prompt += `\n3. Food and dining suggestions`;
   
-  Provide a comprehensive, well-structured itinerary that helps travelers make the most of their trip.
-`;
+  // Conditionally add budget section if mentioned in details
+  if (details.toLowerCase().includes('budget') || details.toLowerCase().includes('cost')) {
+    prompt += `\n4. Estimated costs for each day`;
+  }
+  
+  // Conditionally add transportation section if mentioned
+  if (details.toLowerCase().includes('transport') || details.toLowerCase().includes('travel')) {
+    prompt += `\n5. Transportation options between locations`;
+  }
+  
+  prompt += `\n6. Additional tips or recommendations`;
+  
+  // Add user preferences if provided
+  if (details && details.trim() !== "") {
+    prompt += `\n\nUser preferences: ${details}`;
+  } else {
+    prompt += `\n\nNo specific preferences provided - create a balanced itinerary with popular activities.`;
+  }
+  
+  prompt += `\n\nProvide a comprehensive, well-structured itinerary that helps travelers make the most of their trip.`;
+  
+  return prompt;
+};
 
-    // ✅ Call Gemini
+// Then use it in your function:
+const prompt = buildDynamicPrompt(destination, days, details);
+
+
     const result = await model.generateContent(prompt);
 
-    // ✅ Always return clean text
+
     return result.response.text();
   } catch (error) {
     console.error("❌ Error generating itinerary:", error);
