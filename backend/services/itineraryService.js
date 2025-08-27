@@ -5,8 +5,8 @@ dotenv.config();
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const generationConfig = {
-  temperature: 0.7,
-  topP: 0.9, //  Top-P implementation
+  temperature: 0.9, // Adjustable temperature value (0-1 range)
+  topP: 0.9,
   maxOutputTokens: 2048,
 };
 
