@@ -1,3 +1,4 @@
+//backend/controllers/itineraryController.js
 import { generateItinerary } from "../services/itineraryService.js";
 
 export const getItinerary = async (req, res) => {
