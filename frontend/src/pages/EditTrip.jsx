@@ -70,147 +70,138 @@ export default function EditTrip() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-300 via-sky-200 to-emerald-200">
-        <div className="h-12 w-12 rounded-full border-4 border-sky-900/30 border-t-sky-900 animate-spin" />
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-sky-50 to-emerald-50">
+        <div className="w-12 h-12 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen w-screen relative overflow-hidden">
-      {/* Same background as CreateTrip */}
-      <div className="absolute inset-0 bg-gradient-to-br from-sky-300 via-sky-200 to-emerald-200" />
-      <div className="pointer-events-none absolute -top-24 -left-24 h-80 w-80 rounded-full bg-yellow-300/50 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-24 -right-24 h-96 w-96 rounded-full bg-pink-300/50 blur-3xl" />
-
-      <div className="relative z-10 min-h-screen flex flex-col">
-        <header className="px-6 pt-6">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-sky-50 to-emerald-50">
+      {/* Header */}
+      <header className="bg-white border-b border-blue-100">
+        <div className="max-w-7xl mx-auto px-6 py-4">
           <Link to="/dashboard">
-            <h1 className="text-3xl md:text-5xl font-extrabold text-sky-900 drop-shadow">
-              ✈️ TripSage
-            </h1>
+            <h1 className="text-2xl font-bold text-blue-900">TripSage</h1>
+            <p className="text-sm text-blue-600">Edit trip</p>
           </Link>
-          <p className="text-sky-800/80 mt-1">Edit your trip</p>
-        </header>
+        </div>
+      </header>
 
-        <main className="flex-1 flex items-center justify-center px-6 py-8">
-          <div className="w-full max-w-2xl">
-            <form
-              onSubmit={handleSubmit}
-              className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl p-8 border border-white/40"
-            >
-              <h2 className="text-2xl font-bold text-sky-900 mb-6">Update Trip Details</h2>
+      {/* Main Content */}
+      <main className="max-w-3xl mx-auto px-6 py-12">
+        <div className="bg-white rounded-2xl shadow-sm border border-blue-100 p-8">
+          <h2 className="text-2xl font-bold text-blue-900 mb-6">Update Trip Details</h2>
 
-              {/* Same form fields as CreateTrip */}
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-sky-900 mb-1">
-                  Destination *
-                </label>
-                <input
-                  type="text"
-                  value={destination}
-                  onChange={(e) => setDestination(e.target.value)}
-                  className="w-full rounded-xl border border-sky-300 px-4 py-2 focus:outline-none focus:ring-4 focus:ring-sky-300/60"
-                  required
-                />
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label className="block text-sm font-medium text-blue-900 mb-2">
+                Destination <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                value={destination}
+                onChange={(e) => setDestination(e.target.value)}
+                className="w-full px-4 py-3 rounded-lg border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-blue-900 mb-2">
+                Number of Days <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="number"
+                min="1"
+                max="30"
+                value={days}
+                onChange={(e) => setDays(e.target.value)}
+                className="w-full px-4 py-3 rounded-lg border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-blue-900 mb-3">
+                Budget Preference
+              </label>
+              <div className="grid grid-cols-3 gap-3">
+                {["budget", "moderate", "luxury"].map((b) => (
+                  <button
+                    key={b}
+                    type="button"
+                    onClick={() => setBudget(b)}
+                    className={`px-4 py-3 rounded-lg font-medium transition ${
+                      budget === b
+                        ? "bg-blue-600 text-white shadow-sm"
+                        : "bg-blue-50 text-blue-900 hover:bg-blue-100"
+                    }`}
+                  >
+                    {b.charAt(0).toUpperCase() + b.slice(1)}
+                  </button>
+                ))}
               </div>
+            </div>
 
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-sky-900 mb-1">
-                  Number of Days *
-                </label>
-                <input
-                  type="number"
-                  min="1"
-                  max="30"
-                  value={days}
-                  onChange={(e) => setDays(e.target.value)}
-                  className="w-full rounded-xl border border-sky-300 px-4 py-2 focus:outline-none focus:ring-4 focus:ring-sky-300/60"
-                  required
-                />
+            <div>
+              <label className="block text-sm font-medium text-blue-900 mb-3">
+                Interests
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {interestOptions.map((interest) => (
+                  <button
+                    key={interest}
+                    type="button"
+                    onClick={() => toggleInterest(interest)}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                      interests.includes(interest)
+                        ? "bg-emerald-600 text-white"
+                        : "bg-emerald-50 text-emerald-900 hover:bg-emerald-100"
+                    }`}
+                  >
+                    {interest}
+                  </button>
+                ))}
               </div>
+            </div>
 
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-sky-900 mb-2">
-                  Budget Preference
-                </label>
-                <div className="flex gap-3">
-                  {["budget", "moderate", "luxury"].map((b) => (
-                    <button
-                      key={b}
-                      type="button"
-                      onClick={() => setBudget(b)}
-                      className={`flex-1 px-4 py-2 rounded-xl font-semibold transition ${
-                        budget === b
-                          ? "bg-gradient-to-r from-amber-400 via-orange-500 to-pink-500 text-white"
-                          : "bg-white/60 text-sky-900 hover:bg-white"
-                      }`}
-                    >
-                      {b.charAt(0).toUpperCase() + b.slice(1)}
-                    </button>
-                  ))}
-                </div>
+            <div>
+              <label className="block text-sm font-medium text-blue-900 mb-2">
+                Additional Details (optional)
+              </label>
+              <textarea
+                value={details}
+                onChange={(e) => setDetails(e.target.value)}
+                rows={4}
+                className="w-full px-4 py-3 rounded-lg border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+                {error}
               </div>
+            )}
 
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-sky-900 mb-2">
-                  Interests
-                </label>
-                <div className="flex flex-wrap gap-2">
-                  {interestOptions.map((interest) => (
-                    <button
-                      key={interest}
-                      type="button"
-                      onClick={() => toggleInterest(interest)}
-                      className={`px-4 py-2 rounded-xl font-medium transition ${
-                        interests.includes(interest)
-                          ? "bg-sky-500 text-white"
-                          : "bg-white/60 text-sky-900 hover:bg-white"
-                      }`}
-                    >
-                      {interest}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-sky-900 mb-1">
-                  Additional Details (optional)
-                </label>
-                <textarea
-                  value={details}
-                  onChange={(e) => setDetails(e.target.value)}
-                  rows={4}
-                  className="w-full rounded-xl border border-sky-300 px-4 py-2 focus:outline-none focus:ring-4 focus:ring-sky-300/60"
-                />
-              </div>
-
-              {error && (
-                <p className="mb-4 text-sm text-rose-600 bg-rose-50 border border-rose-200 rounded-lg px-3 py-2">
-                  {error}
-                </p>
-              )}
-
-              <div className="flex gap-3">
-                <Link
-                  to={`/trip/${id}`}
-                  className="flex-1 text-center px-6 py-3 rounded-xl bg-white/60 text-sky-900 font-semibold hover:bg-white transition"
-                >
-                  Cancel
-                </Link>
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="flex-1 px-6 py-3 rounded-xl bg-gradient-to-r from-amber-400 via-orange-500 to-pink-500 text-white font-semibold shadow-lg hover:opacity-95 transition disabled:opacity-60"
-                >
-                  {submitting ? "Updating..." : "💾 Save Changes"}
-                </button>
-              </div>
-            </form>
-          </div>
-        </main>
-      </div>
+            <div className="flex gap-3 pt-4">
+              <Link
+                to={`/trip/${id}`}
+                className="flex-1 text-center px-6 py-3 rounded-lg bg-gray-100 text-gray-700 font-medium hover:bg-gray-200 transition"
+              >
+                Cancel
+              </Link>
+              <button
+                type="submit"
+                disabled={submitting}
+                className="flex-1 px-6 py-3 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {submitting ? "Updating..." : "Save Changes"}
+              </button>
+            </div>
+          </form>
+        </div>
+      </main>
     </div>
   );
 }

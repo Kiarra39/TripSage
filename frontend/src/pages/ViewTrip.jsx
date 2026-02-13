@@ -26,20 +26,20 @@ export default function ViewTrip() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-300 via-sky-200 to-emerald-200">
-        <div className="h-12 w-12 rounded-full border-4 border-sky-900/30 border-t-sky-900 animate-spin" />
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-sky-50 to-emerald-50">
+        <div className="w-12 h-12 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-300 via-sky-200 to-emerald-200">
-        <div className="bg-white/80 backdrop-blur rounded-2xl p-8 max-w-md">
-          <p className="text-rose-600 mb-4">{error}</p>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-sky-50 to-emerald-50">
+        <div className="bg-white rounded-xl p-8 max-w-md border border-red-200">
+          <p className="text-red-600 mb-4">{error}</p>
           <Link
             to="/dashboard"
-            className="inline-block px-6 py-2 rounded-xl bg-sky-500 text-white font-semibold hover:bg-sky-600"
+            className="inline-block px-6 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700"
           >
             Back to Dashboard
           </Link>
@@ -49,32 +49,26 @@ export default function ViewTrip() {
   }
 
   return (
-    <div className="min-h-screen w-screen relative overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-sky-300 via-sky-200 to-emerald-200" />
-      <div className="pointer-events-none absolute -top-24 -left-24 h-80 w-80 rounded-full bg-yellow-300/50 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-24 -right-24 h-96 w-96 rounded-full bg-pink-300/50 blur-3xl" />
-
-      {/* Content */}
-      <div className="relative z-10 h-screen flex flex-col">
-        <header className="px-6 pt-6 flex justify-between items-center">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-sky-50 to-emerald-50">
+      {/* Header */}
+      <header className="bg-white border-b border-blue-100 sticky top-0 z-10 shadow-sm">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link to="/dashboard">
-            <h1 className="text-3xl md:text-5xl font-extrabold text-sky-900 drop-shadow">
-              ✈️ TripSage
-            </h1>
+            <h1 className="text-2xl font-bold text-blue-900">TripSage</h1>
           </Link>
           <Link
             to="/dashboard"
-            className="px-6 py-2 rounded-xl bg-white/80 backdrop-blur text-sky-900 font-semibold hover:bg-white transition"
+            className="px-5 py-2 rounded-lg text-blue-900 font-medium hover:bg-blue-50 transition"
           >
-            ← Back
+            Back to Dashboard
           </Link>
-        </header>
+        </div>
+      </header>
 
-        <main className="flex-1 overflow-hidden">
-          <ItineraryResponse itinerary={trip.itineraryData} />
-        </main>
-      </div>
+      {/* Content */}
+      <main className="max-w-7xl mx-auto px-6 py-8">
+        <ItineraryResponse itinerary={trip.itineraryData} />
+      </main>
     </div>
   );
 }

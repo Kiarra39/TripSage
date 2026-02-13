@@ -5,9 +5,9 @@ import { generateItinerary as generateAIItinerary } from "../services/itineraryS
 // @route   POST /api/trips
 export const createTrip = async (req, res) => {
   try {
-    const { destination, days, details, budget, interests } = req.body;
+    const { destination, duration, details, budget, interests } = req.body;
 
-    if (!destination || !days) {
+    if (!destination || !duration) {
       return res.status(400).json({ error: "Destination and days are required" });
     }
 
@@ -21,13 +21,13 @@ export const createTrip = async (req, res) => {
     }
 
     // Generate itinerary using AI
-    const itineraryData = await generateAIItinerary(destination, days, enhancedDetails);
+    const itineraryData = await generateAIItinerary(destination, duration, enhancedDetails);
 
     // Save trip to database
     const trip = await Trip.create({
       userId: req.user._id,
       destination,
-      duration: days,
+      duration,
       budget: budget || "moderate",
       interests: interests || [],
       details: details || "",
@@ -90,10 +90,10 @@ export const updateTrip = async (req, res) => {
       return res.status(403).json({ error: "Not authorized" });
     }
 
-    const { destination, days, details, budget, interests } = req.body;
+    const { destination, duration, details, budget, interests } = req.body;
 
     // If core details changed, regenerate itinerary
-    if (destination !== trip.destination || days !== trip.duration) {
+    if (destination !== trip.destination || duration !== trip.duration) {
       let enhancedDetails = details || trip.details;
       if (budget) enhancedDetails += ` Budget: ${budget}.`;
       if (interests && interests.length > 0) {
@@ -102,7 +102,7 @@ export const updateTrip = async (req, res) => {
 
       const newItinerary = await generateAIItinerary(
         destination || trip.destination,
-        days || trip.duration,
+        duration || trip.duration,
         enhancedDetails
       );
 
@@ -111,7 +111,7 @@ export const updateTrip = async (req, res) => {
 
     // Update fields
     trip.destination = destination || trip.destination;
-    trip.duration = days || trip.duration;
+    trip.duration = duration || trip.duration;
     trip.details = details || trip.details;
     trip.budget = budget || trip.budget;
     trip.interests = interests || trip.interests;
