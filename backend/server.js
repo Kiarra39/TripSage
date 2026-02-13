@@ -14,11 +14,17 @@ connectDB();
 const app = express();
 
 // CORS
-app.use(cors({
-  origin: "trip-sage-mbuvfx7pn-kiarras-projects-780f5d15.vercel.app",
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://trip-sage-pied.vercel.app"
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
+
 
 app.use(express.json());
 
