@@ -5,7 +5,7 @@ import { getTrip, updateTrip } from "../services/api";
 export default function EditTrip() {
   const { id } = useParams();
   const [destination, setDestination] = useState("");
-  const [days, setDays] = useState("");
+  const [duration, setDuration] = useState(1); // ✅ renamed
   const [budget, setBudget] = useState("moderate");
   const [interests, setInterests] = useState([]);
   const [details, setDetails] = useState("");
@@ -27,7 +27,7 @@ export default function EditTrip() {
     try {
       const trip = await getTrip(id);
       setDestination(trip.destination);
-      setDays(trip.duration.toString());
+      setDuration(trip.duration); // ✅ no toString
       setBudget(trip.budget);
       setInterests(trip.interests || []);
       setDetails(trip.details || "");
@@ -54,7 +54,7 @@ export default function EditTrip() {
     try {
       await updateTrip(id, {
         destination,
-        days: parseInt(days),
+        duration, // ✅ renamed
         budget,
         interests,
         details
@@ -78,7 +78,6 @@ export default function EditTrip() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-sky-50 to-emerald-50">
-      {/* Header */}
       <header className="bg-white border-b border-blue-100">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <Link to="/dashboard">
@@ -88,10 +87,11 @@ export default function EditTrip() {
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="max-w-3xl mx-auto px-6 py-12">
         <div className="bg-white rounded-2xl shadow-sm border border-blue-100 p-8">
-          <h2 className="text-2xl font-bold text-blue-900 mb-6">Update Trip Details</h2>
+          <h2 className="text-2xl font-bold text-blue-900 mb-6">
+            Update Trip Details
+          </h2>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
@@ -115,8 +115,8 @@ export default function EditTrip() {
                 type="number"
                 min="1"
                 max="30"
-                value={days}
-                onChange={(e) => setDays(e.target.value)}
+                value={duration}
+                onChange={(e) => setDuration(Number(e.target.value))} // ✅ ensure number
                 className="w-full px-4 py-3 rounded-lg border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 required
               />
