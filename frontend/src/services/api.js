@@ -1,5 +1,5 @@
 //frontend/src/services/api.js
-const API_URL = "http://localhost:5000/api";
+const API_URL = "https://tripsage-o8d9.onrender.com/api";
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem("token");
