@@ -1,4 +1,4 @@
-// src/components/Card.jsx
+// frontend/src/components/ResponseCard.jsx
 export default function Card({ title, children }) {
   return (
     <div className="bg-white shadow-lg rounded-2xl p-6 mb-6 border border-teal-200 hover:shadow-xl transition duration-300">

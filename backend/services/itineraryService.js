@@ -73,9 +73,9 @@ export const generateItinerary = async (destination, days, details = "") => {
     return parsed;
 
   } catch (error) {
-    console.error("❌ Error generating itinerary:", error);
+    console.error(" Error generating itinerary:", error);
 
-    // 🔥 Return SAFE fallback structure matching frontend expectation
+    //  Return SAFE fallback structure matching frontend expectation
     return {
       destination,
       duration: days,

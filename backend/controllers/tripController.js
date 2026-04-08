@@ -11,7 +11,7 @@ export const createTrip = async (req, res) => {
       return res.status(400).json({ error: "Destination and days are required" });
     }
 
-    // Build enhanced prompt with budget and interests
+    // Build enhanced prompt
     let enhancedDetails = details || "";
     if (budget) {
       enhancedDetails += ` Budget preference: ${budget}.`;
@@ -20,10 +20,21 @@ export const createTrip = async (req, res) => {
       enhancedDetails += ` Interests: ${interests.join(", ")}.`;
     }
 
-    // Generate itinerary using AI
-    const itineraryData = await generateAIItinerary(destination, duration, enhancedDetails);
+    //  Generate itinerary
+    const itineraryData = await generateAIItinerary(
+      destination,
+      duration,
+      enhancedDetails
+    );
 
-    // Save trip to database
+    //  ADD THIS BLOCK (AI busy detection)
+    if (!itineraryData.itinerary || itineraryData.itinerary.length === 0) {
+      return res.status(503).json({
+        message: "AI is busy. Please try again in a few seconds."
+      });
+    }
+
+    //  Only save if valid
     const trip = await Trip.create({
       userId: req.user._id,
       destination,
@@ -35,6 +46,7 @@ export const createTrip = async (req, res) => {
     });
 
     res.status(201).json(trip);
+
   } catch (error) {
     console.error("Create trip error:", error);
     res.status(500).json({ error: error.message });
