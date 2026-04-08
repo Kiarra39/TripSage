@@ -128,10 +128,14 @@ export default function Dashboard() {
   const confirmDelete = (trip) => { setTripToDelete(trip); setShowDeleteModal(true); };
 
   const handleDelete = async () => {
-    await deleteTrip(tripToDelete._id);
-    await fetchTrips();
-    setShowDeleteModal(false);
-    setTripToDelete(null);
+    try {
+      await deleteTrip(tripToDelete._id);
+      await fetchTrips();
+      setShowDeleteModal(false);
+      setTripToDelete(null);
+    } catch (err) {
+      alert("Delete failed");
+    }
   };
 
   const greeting = () => {
@@ -202,6 +206,42 @@ export default function Dashboard() {
           </div>
         )}
       </main>
+
+      {/* DELETE MODAL */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 px-6">
+          <div className="bg-[#141c2e] border border-white/8 rounded-2xl shadow-2xl w-full max-w-sm p-7">
+
+            <h3 className="text-base font-semibold text-white mb-2 text-center">
+              Delete this trip?
+            </h3>
+
+            <p className="text-slate-400 text-sm mb-6 text-center leading-relaxed">
+              <span className="text-white font-medium">
+                {tripToDelete?.destination}
+              </span>{" "}
+              will be permanently removed.
+            </p>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="flex-1 px-4 py-2.5 rounded-xl bg-white/5 text-slate-300 text-sm hover:bg-white/8 transition border border-white/5"
+              >
+                Cancel
+              </button>
+
+              <button
+                onClick={handleDelete}
+                className="flex-1 px-4 py-2.5 rounded-xl bg-red-600 text-white text-sm font-semibold hover:bg-red-500 transition"
+              >
+                Delete
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
     </div>
   );
 }
