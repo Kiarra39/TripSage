@@ -1,3 +1,4 @@
+//frontend/src/App.jsx
 import { useState } from "react";
 import ItineraryForm from "./components/ItineraryForm";
 import ItineraryResponse from "./components/ItineraryResponse";

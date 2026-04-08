@@ -1,3 +1,4 @@
+//frontend/src/services/api.js
 const API_URL = "https://tripsage-o8d9.onrender.com/api";
 
 const getAuthHeaders = () => {
